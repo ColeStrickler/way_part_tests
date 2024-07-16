@@ -2,9 +2,13 @@
 
 # palloc mask for pi5 cache partitioning
 # L2 Cache: 512KB, 8way, 64byte cache lines (https://developer.arm.com/documentation/100798/0401/L2-memory-system/About-the-L2-memory-system)
-# L3 cache: 2MB, 
-#
-#
+# L3 cache: 2MB, 16way, 64byte
+# L2 Set bits --> (2^19)/((2^3)(2^6)) = 10 bits
+# L3 Set bits --> (2^21)/((2^4)(2^6)) = 11 bits 
+# 1 bit can be used to partition L3 --> Bit16
+
+
+
 echo 0x10000 > /sys/kernel/debug/palloc/palloc_mask
 
 
