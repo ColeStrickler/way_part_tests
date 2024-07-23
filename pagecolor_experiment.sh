@@ -15,7 +15,7 @@ vpart=part1 # victim partition
 
 #start co-runners
 for core in 1 2 3; do
-	bandwidth -a write -c $core -m $DRAM_BOMB_SIZE -t 0 & 2>/dev/null
+	bandwidth -a read -c $core -m $DRAM_BOMB_SIZE -t 0 & 2>/dev/null
     bw_pid=$!
     echo $bw_pid >> /sys/fs/cgroup/palloc/$apart/cgroup.procs
 done

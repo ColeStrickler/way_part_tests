@@ -28,25 +28,19 @@ done;
 
 #start co-runners
 for core in 1 2 3; do
-	 bandwidth -a write -c $core -m $DRAM_BOMB_SIZE -t 0 & 2>/dev/null
+	 bandwidth -a read -c $core -m $DRAM_BOMB_SIZE -t 0 & 2>/dev/null
 done
 
-taskset -c 0 perf stat -e instructions,LLC-load-misses,LLC-loads bandwidth -a read -c 0 -t 10 -m $LLC_BOMB_SIZE > out.txt 2>&1
+taskset -c 0 perf stat -e r0500,r0501,r0502,r0503,r0504 bandwidth -a write -c 0 -t 10 -m $LLC_BOMB_SIZE > out.txt 2>&1
 #taskset -c 0 perf stat -e instructions,LLC-load-misses,LLC-loads,r36,r37 bandwidth -a read -c 0 -t 10 -m $LLC_BOMB_SIZE > out.txt 2>&1
 
 killall bandwidth
 
 
-sed -i 's/old-text/new-text/g' ./out.txt
-sed -i 's/r0029/L3D_CACHE_ALLOCATE/g' ./out.txt
-sed -i 's/r002A/L3D_CACHE_REFILL/g' ./out.txt
-sed -i 's/r002B/L3D_CACHE/g' ./out.txt
-sed -i 's/r002C/L3D_CACHE_WB/g' ./out.txt
-sed -i 's/r00A0/L3D_CACHE_RD/g' ./out.txt
-sed -i 's/r00A1/L3D_CACHE_WR/g' ./out.txt
-sed -i 's/r00A2/L3D_CACHE_REFILL_RD/g' ./out.txt
-sed -i 's/r00A3/L3D_CACHE_REFILL_WR/g' ./out.txt
-sed -i 's/r36/LL_CACHE_RD/g' ./out.txt
-sed -i 's/r37/LL_CACHE_MISS_RD/g' ./out.txt
-
+# sed -i 's/old-text/new-text/g' ./out.txt
+sed -i 's/r0500/SCU_PFTCH_CPU_ACCESS/g' ./out.txt
+sed -i 's/r0501/SCU_PFTCH_CPU_MISS/g' ./out.txt
+sed -i 's/r0502/SCU_PFTCH_CPU_HIT/g' ./out.txt
+sed -i 's/r0503/SCU_PFTCH_CPU_MATCH/g' ./out.txt
+sed -i 's/r0504/SCU_PFTCH_CPU_KILL/g' ./out.txt
 cat out.txt
